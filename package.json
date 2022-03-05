@@ -1,0 +1,23 @@
+{
+  "name": "leaf-engine",
+  "version": "1.0.6",
+  "description": "Leaf is a javascript game library",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Caique Sarkis",
+  "license": "ISC",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "devDependencies": {
+    "@types/node": "^17.0.21"
+  },
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "uuid": "^8.3.2"
+  }
+}
