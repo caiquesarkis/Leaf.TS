@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const Systems_1 = require("./Systems");
 class Scene {
-    constructor(name) {
+    constructor(name, width, height) {
         this.name = name;
         this.time = 0;
         this.deltaTime = 1;
@@ -9,6 +10,21 @@ class Scene {
         this.components = {};
         this.entityPools = {};
         this.systems = {};
+        this.width = width;
+        this.height = height;
+        this.dom = document;
+        this.dom.getElementById('leaf-container').innerHTML = `<canvas id="leaf-canvas" width=${width} height=${height}></canvas>`;
+        this.canvas = this.dom.getElementById('leaf-canvas');
+        this.ctx = this.canvas.getContext("2d");
+        this.ctx.translate(width / 2, height / 2);
+        this.ctx.scale(1, -1);
+        this.backgroundColor = '#000';
+    }
+    addCoreSystems(systems) {
+        console.log("Initializing core systems");
+        systems.map((system) => {
+            this.systems[system.name] = system.callback;
+        });
     }
     addEntity(entity) {
         let id = entity.id;
@@ -26,8 +42,12 @@ class Scene {
     addComponent(component, componentName) {
         this.components[componentName] = component;
     }
-    get(pool) {
-        return this.entityPools[pool];
+    get(entityComponent) {
+        return this.entityPools[entityComponent];
+    }
+    getEntityComponent(entityID, componentName) {
+        let entityComponent = this.entityPools[componentName][entityID];
+        return entityComponent;
     }
     addSystem(system, systemName) {
         this.systems[systemName] = system;
@@ -36,7 +56,6 @@ class Scene {
         // Run systems
         // Add Queues later to handle priority
         for (let system in this.systems) {
-            console.log(this.systems[system]);
             this.systems[system](this);
         }
     }
@@ -45,8 +64,19 @@ class Scene {
         this.time += this.deltaTime;
     }
     run() {
-        this.runSystemQeue();
+        let t0 = performance.now();
         this.tick();
+        this.runSystemQeue();
+        let t1 = performance.now();
+        let currentFps = ((t1 - t0) * 1000).toFixed(2);
+        this.fps = parseFloat(currentFps);
+        window.requestAnimationFrame(() => this.run());
+    }
+    start() {
+        this.addCoreSystems([
+            { callback: Systems_1.Renderer2d, name: "Rendered2d" },
+        ]);
+        this.run();
     }
 }
 exports.default = Scene;

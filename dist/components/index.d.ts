@@ -1,5 +1,2 @@
-import Position from "./position";
-declare const _default: {
-    Position: typeof Position;
-};
-export default _default;
+import Transform from "./Transform";
+export { Transform };

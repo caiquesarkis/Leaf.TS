@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const position_1 = require("./position");
-exports.default = {
-    Position: position_1.default
-};
+exports.Transform = void 0;
+const Transform_1 = require("./Transform");
+exports.Transform = Transform_1.default;
+console.log("components", Transform_1.default);
