@@ -88,15 +88,8 @@ export default class Scene{
     }
 
     run(){
-        let t0 = performance.now()
-
         this.tick()
         this.runSystemQeue()
-
-        let t1 = performance.now()
-        let currentFps = ((t1 - t0)*1000).toFixed(2)
-        this.fps = parseFloat(currentFps) 
-
         window.requestAnimationFrame(() => this.run())
     }
 
